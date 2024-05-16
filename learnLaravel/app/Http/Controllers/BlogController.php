@@ -13,30 +13,23 @@ use Illuminate\View\View;
 class BlogController extends Controller
 {
 
-    public function index(BlogFilterRequest $request): View
-    {
-        // dd($request->validated());
+    //     public function index(BlogFilterRequest $request): View
 
-        /*
-        $Validator = Validator::make([
-            'title' => 'aaaaaaaaa'
-        ], [
-            'title' => 'required|min:8'
-        ]);
-        */
-        //dd($Validator->fails());
-        //dd($Validator->errors());
-        //dd($Validator->validated());
+    public function index(): View
+    {
 
         return view('blog.index', [
             'posts' => Post::paginate(1)
         ]);
     }
 
+    //     public function show(string $slug, string $id): RedirectResponse | View
 
-    public function show(string $slug, string $id): RedirectResponse | View
+    public function show(string $slug, Post $post): RedirectResponse | View
     {
-        $post = Post::findOrFail($id);
+        //$post = Post::findOrFail($id);
+        //dd($post);
+        //$post = Post::findOrFail($post);
 
         if ($post->slug !== $slug) {
             return to_route('blog.show', ['slug' => $post->slug, 'id' => $post->id]);
