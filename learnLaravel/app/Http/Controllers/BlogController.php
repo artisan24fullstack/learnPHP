@@ -2,26 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BlogFilterRequest;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class BlogController extends Controller
 {
-    //    public function index(): Paginator
 
-    public function index(): View
+    public function index(BlogFilterRequest $request): View
     {
-        //return Post::paginate(25);
-        //$posts = Post::paginate(25);
+        // dd($request->validated());
+
+        /*
+        $Validator = Validator::make([
+            'title' => 'aaaaaaaaa'
+        ], [
+            'title' => 'required|min:8'
+        ]);
+        */
+        //dd($Validator->fails());
+        //dd($Validator->errors());
+        //dd($Validator->validated());
+
         return view('blog.index', [
             'posts' => Post::paginate(1)
         ]);
     }
 
-    //     public function show(string $slug, string $id): RedirectResponse | Post
 
     public function show(string $slug, string $id): RedirectResponse | View
     {
@@ -30,7 +41,7 @@ class BlogController extends Controller
         if ($post->slug !== $slug) {
             return to_route('blog.show', ['slug' => $post->slug, 'id' => $post->id]);
         }
-        //return $post;
+
         return View('blog.show', [
             'post' => $post
         ]);

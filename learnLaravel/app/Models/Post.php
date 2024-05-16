@@ -9,13 +9,9 @@ class Post extends Model
 {
     use HasFactory;
 
-    // champs remplissable
     protected $fillable = [
         'title',
         'slug',
         'content'
     ];
-
-    // propriété inversée pas autorisé
-    // protected $guarded = [];
 }
