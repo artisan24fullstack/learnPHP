@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class FormPostRequest extends FormRequest
 {
@@ -26,7 +27,8 @@ class FormPostRequest extends FormRequest
         return [
             //
             'title' => ['required', 'min:8'],
-            'slug' => ['required', 'min:8', 'regex:/^[a-z0-9\-]+$/', 'unique:posts'],
+            //'slug' => ['required', 'min:8', 'regex:/^[a-z0-9\-]+$/', 'unique:posts'],                           // creation
+            'slug' => ['required', 'min:8', 'regex:/^[a-z0-9\-]+$/', Rule::unique('posts')->ignore($this->route()->parameter('post'))], // modification
             'content' => ['required']
         ];
     }
