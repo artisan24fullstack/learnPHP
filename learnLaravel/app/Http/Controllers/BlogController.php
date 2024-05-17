@@ -18,8 +18,10 @@ class BlogController extends Controller
     public function create()
     {
         //dd(session()->all());
-
-        return view('blog.create');
+        $post = new Post();
+        return view('blog.create', [
+            'post' => $post
+        ]);
     }
 
     //public function store(Request $request)
