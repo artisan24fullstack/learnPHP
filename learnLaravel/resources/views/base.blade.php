@@ -23,6 +23,8 @@
         // @class(['nav-link', 'active' => $routeName === 'blog.index'])
         $routeName = request()->route()->getName();
     @endphp
+    {{--   @dump(request()->route()->getName()) --}}
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('blog.index') }}">Blog</a>
@@ -48,7 +50,12 @@
         </div>
     </nav>
     <div class="container">
-        {{--   @dump(request()->route()->getName()) --}}
+
+        @if (@session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
         @yield('content')
     </div>
