@@ -18,11 +18,17 @@ class Post extends Model
         'content'
     ];
 
-    /*
-    cet article là appartient à une catégorie
-    */
+    // cet article là appartient à une catégorie
+
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    // un article à plusieurs tags
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }

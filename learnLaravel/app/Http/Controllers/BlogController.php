@@ -61,39 +61,26 @@ class BlogController extends Controller
     public function index(): View
     {
 
-        $category = Category::find(2);
-        $post = Post::find(1);
-        $post->category()->associate($category);
-        $post->save();
-        //dd($category->posts);
-
-        //$posts = Post::all();
+        //dd(Post::has('tags', '>=', 1)->get());
+        //Post::has('tags', '>=', 2)->get();
+        //$category = Category::find(2);
         //$post = Post::find(1);
-        /*
-        $posts = Post::with('category')->get(); //eager loading précharger une relation (category)
-        foreach ($posts as $post) {
-            $category = $post->category?->name;
-        }
-        */
-        //$post = Post::find(1);
-        //$category = $post->category->name;
-        //dd($post->category->name);
+        //dd($post->tags);
+        //$tags = $post->tags()->detach(2);
+        //$tags = $post->tags()->attach(2);
+        //$tags = $post->tags()->sync([1, 2]);
 
         /*
-        $post = Post::find(3);
-        $post->category_id = 2;
-        $post->save();
+        $post->tags()->createMany([[
+            'name' => 'tag 1'
+        ], [
+            'name' => 'tag 2'
+
+        ]]);
         */
-        /*
-        Category::create([
-            'name' => "Catégorie 1"
-        ]);
-        Category::create([
-            'name' => "Catégorie 2"
-        ]);
-        */
+
         return view('blog.index', [
-            'posts' => Post::paginate(3)
+            'posts' => Post::with('tags', 'category')->paginate(5)
         ]);
     }
 
