@@ -22,7 +22,9 @@ class BlogController extends Controller
         //dd(session()->all());
         $post = new Post();
         return view('blog.create', [
-            'post' => $post
+            'post' => $post,
+            'categories' => Category::select('id', 'name')->get(),
+            'tags' => Tag::select('id', 'name')->get()
         ]);
     }
 
@@ -30,6 +32,8 @@ class BlogController extends Controller
     public function store(FormPostRequest $request)
     {
         $post = Post::create($request->validated());
+        $post->tags()->sync($request->validated('tags'));
+
         /*
         $post = Post::create([
             'title' => $request->input('title'),
@@ -38,7 +42,9 @@ class BlogController extends Controller
         ]);
         */
         //dd($request->all());
-        return redirect()->route('blog.show', ['slug' => $post->slug, 'post' => $post->id])->with('success', "L'article a bien été sauvegardé");
+        return redirect()
+            ->route('blog.show', ['slug' => $post->slug, 'post' => $post->id])
+            ->with('success', "L'article a bien été sauvegardé");
     }
 
     public function edit(Post $post)
