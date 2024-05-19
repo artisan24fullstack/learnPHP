@@ -15,7 +15,8 @@ class Post extends Model
     protected $fillable = [
         'title',
         'slug',
-        'content'
+        'content',
+        'category_id'
     ];
 
     // cet article là appartient à une catégorie

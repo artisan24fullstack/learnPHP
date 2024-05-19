@@ -6,23 +6,36 @@
     @method($post->id ? 'PATCH' : 'POST')
 
     <div class="form-group">
-        <label>Titre</label>
-        <input class="form-control" type="text" name="title" value="{{ old('title', $post->title) }}">
+        <label for="title">Titre</label>
+        <input id="title" class="form-control" type="text" name="title" value="{{ old('title', $post->title) }}">
         @error('title')
             {{ $message }}
         @enderror
     </div>
     <div class="form-group">
-        <label>Slug</label>
-        <input class="form-control" type="text" name="slug" value="{{ old('slug', $post->slug) }}">
+        <label for="slug">Slug</label>
+        <input id="slug" class="form-control" type="text" name="slug" value="{{ old('slug', $post->slug) }}">
         @error('slug')
             {{ $message }}
         @enderror
     </div>
     <div class="form-group">
-        <label>Contenu</label>
-        <textarea class="form-control" name="content">{{ old('content', $post->content) }}</textarea>
+        <label for="content">Contenu</label>
+        <textarea id="content" class="form-control" name="content">{{ old('content', $post->content) }}</textarea>
         @error('content')
+            {{ $message }}
+        @enderror
+    </div>
+    <div class="form-group">
+        <label for="category">Catégorie</label>
+        <select id="category" class="form-control" name="category_id">
+            <option value="">Sélectionner une catégorie</option>
+            @foreach ($categories as $category)
+                <option @selected(old('category_id', $post->category_id) == $category->id) value={{ $category->id }}>{{ $category->name }}</option>
+            @endforeach
+
+        </select>
+        @error('category_id')
             {{ $message }}
         @enderror
     </div>

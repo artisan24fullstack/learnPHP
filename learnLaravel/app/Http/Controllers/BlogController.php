@@ -44,7 +44,8 @@ class BlogController extends Controller
     {
 
         return view('blog.edit', [
-            'post' => $post
+            'post' => $post,
+            'categories' => Category::select('id', 'name')->get()
         ]);
     }
 
