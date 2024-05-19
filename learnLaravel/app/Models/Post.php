@@ -17,4 +17,12 @@ class Post extends Model
         'slug',
         'content'
     ];
+
+    /*
+    cet article là appartient à une catégorie
+    */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

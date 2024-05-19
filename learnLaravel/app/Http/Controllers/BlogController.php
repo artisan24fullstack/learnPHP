@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogFilterRequest;
 use App\Http\Requests\FormPostRequest;
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -60,8 +61,39 @@ class BlogController extends Controller
     public function index(): View
     {
 
+        $category = Category::find(2);
+        $post = Post::find(1);
+        $post->category()->associate($category);
+        $post->save();
+        //dd($category->posts);
+
+        //$posts = Post::all();
+        //$post = Post::find(1);
+        /*
+        $posts = Post::with('category')->get(); //eager loading précharger une relation (category)
+        foreach ($posts as $post) {
+            $category = $post->category?->name;
+        }
+        */
+        //$post = Post::find(1);
+        //$category = $post->category->name;
+        //dd($post->category->name);
+
+        /*
+        $post = Post::find(3);
+        $post->category_id = 2;
+        $post->save();
+        */
+        /*
+        Category::create([
+            'name' => "Catégorie 1"
+        ]);
+        Category::create([
+            'name' => "Catégorie 2"
+        ]);
+        */
         return view('blog.index', [
-            'posts' => Post::paginate(1)
+            'posts' => Post::paginate(3)
         ]);
     }
 
