@@ -6,6 +6,7 @@ use App\Http\Requests\BlogFilterRequest;
 use App\Http\Requests\FormPostRequest;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -45,15 +46,17 @@ class BlogController extends Controller
 
         return view('blog.edit', [
             'post' => $post,
-            'categories' => Category::select('id', 'name')->get()
+            'categories' => Category::select('id', 'name')->get(),
+            'tags' => Tag::select('id', 'name')->get()
         ]);
     }
 
     public function update(Post $post, FormPostRequest $request)
     {
 
+        //dd($request->validated('tags'));
         $post->update($request->validated());
-
+        $post->tags()->sync($request->validated('tags'));
         return redirect()->route('blog.show', ['slug' => $post->slug, 'post' => $post->id])->with('success', "L'article a bien été modifié");
     }
 

@@ -39,6 +39,32 @@
             {{ $message }}
         @enderror
     </div>
+    {{-- -
+    @dump($post->tags->pluck('id'))
+    select "tags".*, "post_tag"."post_id" as "pivot_post_id", "post_tag"."tag_id" as "pivot_tag_id" from "tags" inner join "post_tag" on "tags"."id" = "post_tag"."tag_id" where "post_tag"."post_id" = 1
+
+    @dump($post->tags()->pluck('id'))
+    select "id" from "tags" inner join "post_tag" on "tags"."id" = "post_tag"."tag_id" where "post_tag"."post_id" = 1
+
+    The tags field must be an array.
+        select  name="tags" multiple replace by name="tags[]"
+
+    --}}
+    @php
+        $tagsIds = $post->tags->pluck('id');
+    @endphp
+    <div class="form-group">
+        <label for="tag">Tags</label>
+        <select id="tag" class="form-control" name="tags[]" multiple>
+            @foreach ($tags as $tag)
+                <option @selected($tagsIds->contains($tag->id)) value={{ $tag->id }}>{{ $tag->name }}</option>
+            @endforeach
+
+        </select>
+        @error('tags')
+            {{ $message }}
+        @enderror
+    </div>
     <button class="btn btn-primary">
         @if ($post->id)
             Modifier
