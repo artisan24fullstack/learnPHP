@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BlogFilterRequest;
-use App\Http\Requests\FormPostRequest;
-use App\Models\Category;
-use App\Models\Post;
 use App\Models\Tag;
+use App\Models\Post;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Category;
+use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\FormPostRequest;
+use App\Http\Requests\BlogFilterRequest;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\View\View;
-use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
@@ -63,8 +64,28 @@ class BlogController extends Controller
     public function update(Post $post, FormPostRequest $request)
     {
 
+        $data = $request->validated();
+        /**
+         * @var UploadedFile|null $image
+         * */
+
+        //$image = $request->file('image');
+
+        $image = $request->validated('image');
+        if ($image !== null && !$image->getError()) {
+
+            $data['image'] = $image->store('blog', 'public');
+        }
+
+
+        /*
+        $imagePath =
+        $data['image'] = $imagePath;
+        dd($imagePath);
+        */
         //dd($request->validated('tags'));
-        $post->update($request->validated());
+        //$post->update($request->validated());
+        $post->update($data);
         $post->tags()->sync($request->validated('tags'));
         return redirect()->route('blog.show', ['slug' => $post->slug, 'post' => $post->id])->with('success', "L'article a bien été modifié");
     }

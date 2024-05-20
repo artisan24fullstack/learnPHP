@@ -29,6 +29,9 @@
                     Aucun tag
                 @endif
             </p>
+            @if ($post->image)
+                <img style="with:100%;height:250px;object-fit:cover;" src="{{ $post->imageUrl() }}" />
+            @endif
             <p>{{ $post->content }}</p>
             <p>
                 <a class="btn btn-primary" href="{{ route('blog.show', ['slug' => $post->slug, 'post' => $post->id]) }}">
