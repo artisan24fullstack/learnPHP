@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\FormPostRequest;
 use App\Http\Requests\BlogFilterRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
@@ -35,7 +36,11 @@ class BlogController extends Controller
     //public function store(Request $request)
     public function store(FormPostRequest $request)
     {
-        $post = Post::create($request->validated());
+        $post = new Post();
+        //$post = Post::create($request->validated());
+        $post = Post::create($this->imageData($post, $request));
+
+
         $post->tags()->sync($request->validated('tags'));
 
         /*
@@ -64,30 +69,33 @@ class BlogController extends Controller
     public function update(Post $post, FormPostRequest $request)
     {
 
+
+
+        $post->update($this->imageData($post, $request));
+
+        $post->tags()->sync($request->validated('tags'));
+        return redirect()->route('blog.show', ['slug' => $post->slug, 'post' => $post->id])->with('success', "L'article a bien été modifié");
+    }
+
+    private function imageData(Post $post, FormPostRequest $request): array
+    {
         $data = $request->validated();
         /**
          * @var UploadedFile|null $image
          * */
 
-        //$image = $request->file('image');
 
         $image = $request->validated('image');
-        if ($image !== null && !$image->getError()) {
-
-            $data['image'] = $image->store('blog', 'public');
+        if ($image == null || $image->getError()) {
+            return $data;
         }
 
+        if ($post->image) {
+            Storage::disk('public')->delete($post->image);
+        }
 
-        /*
-        $imagePath =
-        $data['image'] = $imagePath;
-        dd($imagePath);
-        */
-        //dd($request->validated('tags'));
-        //$post->update($request->validated());
-        $post->update($data);
-        $post->tags()->sync($request->validated('tags'));
-        return redirect()->route('blog.show', ['slug' => $post->slug, 'post' => $post->id])->with('success', "L'article a bien été modifié");
+        $data['image'] = $image->store('blog', 'public');
+        return $data;
     }
 
     //     public function index(BlogFilterRequest $request): View
