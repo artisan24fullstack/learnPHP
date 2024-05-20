@@ -22,6 +22,7 @@
 
         // @class(['nav-link', 'active' => $routeName === 'blog.index'])
         $routeName = request()->route()->getName();
+
     @endphp
     {{--   @dump(request()->route()->getName()) --}}
 
@@ -45,6 +46,21 @@
                         <a class="nav-link" href="#">Link</a>
                     </li>
                 </ul>
+                <div class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    @auth
+                        {{ Illuminate\Support\Facades\Auth::user()->name }}
+                        <form class="nav-item" action="{{ route('auth.logout') }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button class="nav-link">Se déconnecter</button>
+                        </form>
+                    @endauth
+                    @guest
+                        <div class="nav-item">
+                            <a class="nav-link" href="{{ route('auth.login') }}">Se connecter</a>
+                        </div>
+                    @endguest
+                </div>
 
             </div>
         </div>
