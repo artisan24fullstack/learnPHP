@@ -19,14 +19,26 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                @foreach ($properties as $property)
-                    <td>{{ $proterty->title }}</td>
-                    <td>{{ $proterty->surface }}</td>
-                    <td>{{ number_format($proterty->price, thousands_separator: ' ') }}</td>
-                    <td>{{ $proterty->city }}</td>
-                @endforeach
-            </tr>
+            @foreach ($properties as $property)
+                <tr>
+
+                    <td>{{ $property->title }}</td>
+                    <td>{{ $property->surface }}</td>
+                    <td>{{ number_format($property->price, thousands_separator: ' ') }}</td>
+                    <td>{{ $property->city }}</td>
+                    <td>
+                        <div class='d-flex gap-2 justify-content-end'>
+                            <a class="btn btn-primary" href="{{ route('admin.property.edit', $property) }}">Editer</a>
+                            <form action="{{ route('admin.property.destroy', $property) }}" method="post">
+
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
 
         </tbody>
     </table>
