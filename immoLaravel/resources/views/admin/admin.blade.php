@@ -8,6 +8,8 @@
     <title>@yield('title') | Administration </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
     <style>
         @layer demo {
             button {
@@ -67,6 +69,15 @@
         @yield('content')
 
     </div>
+    <script>
+        // Initialize Tom Select with multiple selections enabled
+        let selectElement = document.querySelector('select[multiple]');
+        let settings = {
+            plugins: ['remove_button'], // Optional: Enable remove button plugin
+            // Add any other settings you need
+        };
+        new TomSelect(selectElement, settings);
+    </script>
 </body>
 
 </html>
