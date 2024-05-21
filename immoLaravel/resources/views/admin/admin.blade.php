@@ -18,6 +18,34 @@
 </head>
 
 <body>
+    @php
+        $routeName = request()->route()->getName();
+    @endphp
+    <nav class="navbar navbar-expand-lg bg-primary navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Agence</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a @class([
+                            'nav-link',
+                            'active' => str_contains($routeName, 'property.'),
+                        ]) aria-current="page"
+                            href="{{ route('admin.property.index') }}">Gérer les biens</a>
+                    </li>
+                    <li class="nav-item">
+                        <a @class(['nav-link', 'active' => str_contains($routeName, 'option.')]) aria-current="page"
+                            href="{{ route('admin.option.index') }}">Gérer les options</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         @if (@session('success'))
             <div class="alert alert-success">
