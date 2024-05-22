@@ -44,28 +44,28 @@
                             href="{{ route('admin.option.index') }}">Gérer les options</a>
                     </li>
                 </ul>
+                <div class="ms-auto">
+                    @auth
+
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <form action="{{ route('logout') }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="nav-link">Se déconnecter</button>
+                                </form>
+                            </li>
+                        </ul>
+                    @endauth
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="container mt-5">
-        @if (@session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
 
+        @include('shared.flash')
 
-        @if ($errors->any())
-
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
         @yield('content')
 
     </div>
